@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="radar" id="radarS"></div>
+    <div class="Border" id="BorderS"></div>
+    <div class="Box">
+        <div class="napis">Ustawienia Radaru</div>
+            <div class="Sliders">
+                <div class="Key">
+                <label class="switch">
+                    <input type="checkbox" id="Border">
+                    <span class="slider round"></span>
+                </label></div>
+                <div class="Text">Ramka</div>
+                <label class="switch">
+                    <input type="checkbox" id="radar">
+                    <span class="slider round"></span>
+                </label>
+                <div class="Text">Radar ON/OFF</div></div></div></body>
+
+<script>
+
+    window.addEventListener("message", (event) => {
+        switch (event.data.action) {
+            case 'OpenRadarMenu':
+                $('.Box').css('display', 'block')
+                break;
+
+                case 'HideEditHud':
+                $('.Box').css('display', 'none')
+                break;
+        }
+    })
+
+    $('#Border').click(() => {
+        if ($('#Border')[0].checked == true) {
+            $('#BorderS').css('display', 'block')
+        } else {
+            $('#BorderS').css('display', 'none')
+        }
+    })
+
+    $('#radar').click(() => {
+        if ($('#radar')[0].checked == true) {
+            $.post('http://vs-radar/radon', JSON.stringify({}))
+            
+        } else {
+            $('#BorderS').css('display', 'none')
+            $.post('http://vs-radar/radoff', JSON.stringify({}))
+        }
+    })
+
+    document.onkeydown = function (data) {
+        if (data.which == 27) {
+            $('.Box').css('display', 'none')
+            $.post('http://vs-radar/CloseRadarMenu', JSON.stringify({}))
+        }
+    }
+
+</script>
+</html>
